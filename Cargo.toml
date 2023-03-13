@@ -7,4 +7,6 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
+confy = "0.5"
 emojis = "0.5"
+serde = { version = "1", features = ["derive"] }

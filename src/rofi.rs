@@ -1,12 +1,12 @@
 use std::{
     error::Error,
-    io::{self, prelude, Read, Write},
+    io::{Read, Write},
     process::{Command, Stdio},
 };
 
-pub fn get_index() -> Result<u64, Box<dyn Error>> {
+pub fn get_index(config: &crate::config::Config) -> Result<u64, Box<dyn Error>> {
     // spawn rofi command
-    let rofi = Command::new("rofi")
+    let rofi = Command::new(&config.rofi_binary)
         .arg("-format")
         .arg("i")
         .arg("-dmenu")

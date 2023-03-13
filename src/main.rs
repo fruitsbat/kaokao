@@ -1,12 +1,9 @@
-use std::{
-    io::{self, prelude, Read, Write},
-    process::{Command, Stdio},
-};
-
+mod config;
 mod rofi;
 
 fn main() {
-    let index = match rofi::get_index() {
+    let cfg = config::load_config();
+    let index = match rofi::get_index(&cfg) {
         Err(reason) => panic!("rofi failed because: {}", reason),
         Ok(index) => index,
     };
