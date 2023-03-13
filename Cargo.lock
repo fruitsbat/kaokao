@@ -172,6 +172,7 @@ dependencies = [
  "confy",
  "emojis",
  "serde",
+ "serde_derive",
 ]
 
 [[package]]
