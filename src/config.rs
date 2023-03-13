@@ -1,5 +1,5 @@
 use serde_derive::{Deserialize, Serialize};
-use std::error::Error;
+
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Config {
@@ -15,5 +15,5 @@ impl Default for Config {
 }
 
 pub fn load_config() -> Config {
-    confy::load("kaokao", None).unwrap_or(Config::default())
+    confy::load("kaokao", None).unwrap_or_default()
 }
