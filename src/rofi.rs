@@ -4,7 +4,7 @@ use std::{
     process::{Command, Stdio},
 };
 
-pub fn get_index(config: &crate::config::Config) -> Result<u64, Box<dyn Error>> {
+pub fn get_index(config: &crate::config::Config, list: &String) -> Result<usize, Box<dyn Error>> {
     // spawn rofi command
     let rofi = Command::new(&config.rofi_binary)
         .arg("-format")
@@ -15,9 +15,7 @@ pub fn get_index(config: &crate::config::Config) -> Result<u64, Box<dyn Error>> 
         .spawn()?;
 
     // write list to rofi
-    rofi.stdin
-        .unwrap()
-        .write_all("meow\nkitty\nmeow".as_bytes())?;
+    rofi.stdin.unwrap().write_all(list.as_bytes())?;
 
     // read to index
     let mut index = String::new();
@@ -26,7 +24,7 @@ pub fn get_index(config: &crate::config::Config) -> Result<u64, Box<dyn Error>> 
         .read_to_string(&mut index)
         .expect("failed to read from rofi");
 
-    let index: u64 = index.trim().parse()?;
+    let index: usize = index.trim().parse()?;
 
     Ok(index)
 }

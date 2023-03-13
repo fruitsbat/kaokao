@@ -1,19 +1,11 @@
-use serde_derive::{Deserialize, Serialize};
+use clap::{self, Parser};
 
-
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone, Parser, Debug)]
 pub struct Config {
+    #[arg(long, default_value = "rofi")]
     pub rofi_binary: String,
 }
 
-impl Default for Config {
-    fn default() -> Self {
-        Config {
-            rofi_binary: "rofi".into(),
-        }
-    }
-}
-
 pub fn load_config() -> Config {
-    confy::load("kaokao", None).unwrap_or_default()
+    Config::parse()
 }
