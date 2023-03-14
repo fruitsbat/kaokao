@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 use std::{error::Error, fs};
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Eq, PartialEq)]
 pub struct Moji {
     pub value: String,
     pub description: String,
@@ -75,8 +75,14 @@ fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
 }
 
 pub fn save_recent(moji: Moji) -> Result<(), Box<dyn Error>> {
-    let mut recents = vec![moji];
-    recents.append(&mut load_recent()?);
+    let mut recents = vec![moji.clone()];
+    recents.append(
+        &mut load_recent()?
+            .iter()
+            .filter(|&m| m.clone() != moji)
+            .map(|m| m.clone())
+            .collect::<Vec<Moji>>(),
+    );
     let mut new_recents = vec![];
     let mut i = 0;
     for r in recents {
