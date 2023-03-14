@@ -1,5 +1,6 @@
 # kaokao
 a simple emoji picker using rofi
+![a simple usage example, a kaomoji is being copy pasted into a terminal](https://github.com/zoe-bat/kaokao/blob/main/kaokao.gif?raw=true)
 
 ## installation
 ### nix with flakes
