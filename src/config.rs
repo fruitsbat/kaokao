@@ -20,7 +20,7 @@ pub struct Config {
     #[arg(long)]
     pub disable_recent: bool,
 
-    #[arg(short, long, default_value = " (╭ರ_•́) ")]
+    #[arg(short, long, default_value = "(*･ω･)✎ ")]
     pub prompt: String,
 }
 
