@@ -19,6 +19,9 @@ pub struct Config {
     /// show all builtin kaomoji
     #[arg(long)]
     pub disable_recent: bool,
+
+    #[arg(short, long, default_value = " (╭ರ_•́) ")]
+    pub prompt: String,
 }
 
 pub fn load_config() -> Config {

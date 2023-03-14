@@ -10,6 +10,9 @@ pub fn get_index(config: &crate::config::Config, list: &String) -> Result<usize,
         .arg("-format")
         .arg("i")
         .arg("-dmenu")
+        .arg("-p")
+        .arg(&config.prompt)
+        .arg("-i")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()?;
