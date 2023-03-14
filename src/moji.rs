@@ -42,7 +42,9 @@ pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
                 .collect::<Vec<Moji>>(),
         );
     }
-    if !cfg.disable_kaomoji {}
+    if !cfg.disable_kaomoji {
+        mojis.append(&mut builtin_kaomoji())
+    }
     mojis.append(&mut load_moji_from_files(&cfg)?);
     Ok(mojis)
 }
@@ -66,4 +68,25 @@ fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
         vec_moji.append(&mut m);
     }
     Ok(vec_moji)
+}
+
+fn builtin_kaomoji() -> Vec<Moji> {
+    vec![
+        ("(ﾉ≧∇≦)ﾉ ﾐ ┸━┸", "tableflip"),
+        ("(* >ω<)=3ACHOOE!", "sneezing"),
+        ("┐(°‿°)┌", "shrugging"),
+        ("ᕙ(⇀‸↼‶)ᕗ", "flexing"),
+        ("(❁ᴗ͈ ˬ ᴗ͈)ᶻᶻᶻ✧", "sleeping"),
+        ("(:˒[￣] ᵍᵒᵒᵈ ⁿᶦᵍʰᵗ", "good night, sleeping"),
+        ("≖‿≖", "skeptical, dead inside"),
+        ("ಠ_ಠ", "disapproval"),
+        (" /ᐠ｡ꞈ｡ᐟ\\", "cat, kitty"),
+        (" ˓˓ก₍⸍⸌̣ʷ̣̫⸍̣⸌₎ค˒˒", "kitty, cat"),
+    ]
+    .iter()
+    .map(|row| Moji {
+        value: row.0.into(),
+        description: row.1.into(),
+    })
+    .collect::<Vec<Moji>>()
 }
