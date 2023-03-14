@@ -35,11 +35,14 @@ pub fn moji_to_string(moji: &Vec<Moji>) -> String {
 
 pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
     let mut mojis = vec![];
-    mojis.append(
-        &mut emojis::iter()
-            .map(|e| Moji::from_emoji(e))
-            .collect::<Vec<Moji>>(),
-    );
+    if !cfg.disable_unicode {
+        mojis.append(
+            &mut emojis::iter()
+                .map(|e| Moji::from_emoji(e))
+                .collect::<Vec<Moji>>(),
+        );
+    }
+    if !cfg.disable_kaomoji {}
     mojis.append(&mut load_moji_from_files(&cfg)?);
     Ok(mojis)
 }

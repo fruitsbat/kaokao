@@ -7,6 +7,14 @@ pub struct Config {
 
     #[arg(short, long, num_args = 1.., value_delimiter = ' ')]
     pub files: Vec<String>,
+
+    /// show all unicode emoji
+    #[arg(long)]
+    pub disable_unicode: bool,
+
+    /// show all builtin kaomoji
+    #[arg(long)]
+    pub disable_kaomoji: bool,
 }
 
 pub fn load_config() -> Config {
