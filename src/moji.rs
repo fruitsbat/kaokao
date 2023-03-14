@@ -1,11 +1,12 @@
 use crate::config::Config;
 use csv;
+use directories;
 use emojis;
 use serde::{Deserialize, Serialize};
 use serde_json;
 use std::{error::Error, fs};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Moji {
     pub value: String,
     pub description: String,
@@ -35,6 +36,9 @@ pub fn moji_to_string(moji: &Vec<Moji>) -> String {
 
 pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
     let mut mojis = vec![];
+    if !cfg.disable_recent {
+        mojis.append(&mut load_recent()?);
+    }
     if !cfg.disable_unicode {
         mojis.append(
             &mut emojis::iter()
@@ -70,6 +74,38 @@ fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
     Ok(vec_moji)
 }
 
+pub fn save_recent(moji: Moji) -> Result<(), Box<dyn Error>> {
+    let mut recents = vec![moji];
+    recents.append(&mut load_recent()?);
+    let mut new_recents = vec![];
+    let mut i = 0;
+    for r in recents {
+        // limit to ten most recent
+        if i >= 10 {
+            break;
+        }
+        new_recents.push(r);
+        i += 1;
+    }
+    let base_dirs = directories::BaseDirs::new().ok_or("failed to find base dir!")?;
+    let data_dir = base_dirs.data_dir();
+    fs::create_dir_all(data_dir.join("kaokao"))?;
+    fs::write(
+        data_dir.join("kaokao/recent.json"),
+        serde_json::to_string(&new_recents)?.as_bytes(),
+    )?;
+    Ok(())
+}
+
+fn load_recent() -> Result<Vec<Moji>, Box<dyn Error>> {
+    let base_dir = directories::BaseDirs::new().ok_or("could not load base dir")?;
+    let path = base_dir.data_dir().join("kaokao/recent.json");
+    if !path.exists() {
+        return Ok(vec![]);
+    }
+    Ok(serde_json::from_str(&fs::read_to_string(path)?)?)
+}
+
 fn builtin_kaomoji() -> Vec<Moji> {
     vec![
         ("(ﾉ≧∇≦)ﾉ ﾐ ┸━┸", "tableflip"),
@@ -81,7 +117,25 @@ fn builtin_kaomoji() -> Vec<Moji> {
         ("≖‿≖", "skeptical, dead inside"),
         ("ಠ_ಠ", "disapproval"),
         (" /ᐠ｡ꞈ｡ᐟ\\", "cat, kitty"),
-        (" ˓˓ก₍⸍⸌̣ʷ̣̫⸍̣⸌₎ค˒˒", "kitty, cat"),
+        ("─=≡Σ((( つ•̀ω•́)つLET’SGO!", "let's go"),
+        ("( ˘▽˘)っ♨", "tea, coffee, hot drink, food"),
+        ("(๑¯ิ̑﹃ ¯ิ̑๑)", "hungry"),
+        ("(─‿‿─)", "skeptical, uwu"),
+        ("(ू˃̣̣̣̣̣̣︿˂̣̣̣̣̣̣ ू)", "cry"),
+        ("(✼ X̥̥̥ ‸ X̥̥̥)", "crying"),
+        ("╥﹏╥", "crying"),
+        ("（＾▽＾（＾▽＾＊）", "hugging, friends"),
+        ("（⋆＾－＾⋆）", "smiling, blushing"),
+        ("（＾－＾）", "smiling"),
+        ("（＾³＾）～♪", "whistling"),
+        ("(㇏(•̀ ᢍ •́ )ノ)", "bat"),
+        (" ♡(ᐢ ᴥ ᐢし)", "dog, love"),
+        ("૮ ˘ﻌ˘ ა", "dog, sleeping"),
+        ("(๑•﹏•)⋆* ⁑⋆*", "confused"),
+        ("(ﾉ>｡☆)ﾉ", "surprised"),
+        ("(」ﾟﾛﾟ)｣NOOOooooo━", "surprised"),
+        ("ᵒʰ(⑉・̆⌓・̆⑉)ɴᴏ", "nervous"),
+        ("(*≧m≦*)", "angry"),
     ]
     .iter()
     .map(|row| Moji {

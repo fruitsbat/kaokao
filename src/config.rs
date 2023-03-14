@@ -15,6 +15,10 @@ pub struct Config {
     /// show all builtin kaomoji
     #[arg(long)]
     pub disable_kaomoji: bool,
+
+    /// show all builtin kaomoji
+    #[arg(long)]
+    pub disable_recent: bool,
 }
 
 pub fn load_config() -> Config {

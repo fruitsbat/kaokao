@@ -12,5 +12,9 @@ fn main() {
         Err(reason) => panic!("rofi failed because: {}", reason),
         Ok(index) => index,
     };
+    match moji::save_recent(mojilist[index].clone()) {
+        Ok(_) => (),
+        Err(reason) => panic!("could not save most recently used because: {}", reason),
+    }
     print!("{}", mojilist[index].value);
 }
