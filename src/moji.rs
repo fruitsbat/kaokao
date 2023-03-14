@@ -80,8 +80,8 @@ pub fn save_recent(moji: Moji) -> Result<(), Box<dyn Error>> {
     let mut new_recents = vec![];
     let mut i = 0;
     for r in recents {
-        // limit to ten most recent
-        if i >= 10 {
+        // limit to 100 most recent
+        if i >= 100 {
             break;
         }
         new_recents.push(r);
@@ -136,6 +136,29 @@ fn builtin_kaomoji() -> Vec<Moji> {
         ("(」ﾟﾛﾟ)｣NOOOooooo━", "surprised"),
         ("ᵒʰ(⑉・̆⌓・̆⑉)ɴᴏ", "nervous"),
         ("(*≧m≦*)", "angry"),
+        ("(*･ω･)✎ ", "writing"),
+        ("(๑˃ᴗ˂)ﻭ", "fight, cute, fist"),
+        ("(⌒‿⌒)", "smile"),
+        ("(─‿‿─)♡", "uwu, love"),
+        ("(⌒_⌒;)", "sweat, emberassed"),
+        ("(≧◡≦) ♡", "love, blushing"),
+        ("(；⌣̀_⌣́)", "seething"),
+        ("(」＞＜)」", "you hear about video games"),
+        ("ヾ( ￣O￣)ツ", "yawn, sleepy, bored"),
+        ("(＞﹏＜)", "sour"),
+        ("(・`ω´・) ", "rage"),
+        ("(╬ Ò﹏Ó)", "anger"),
+        ("(T⌓T)", "trolled"),
+        ("(×_×)", "dead"),
+        ("(￢_￢)", "sideeyes"),
+        ("(¬◡¬)✧", "more fab than you"),
+        ("(^_<)〜☆", "wink, sparkle"),
+        ("─=≡Σ((( つ＞＜)つ", "running"),
+        ("ヽ（　＾＾）人（＾＾　）ノ", "high five"),
+        ("(¬_¬'')ԅ(￣ε￣ԅ)", "secret"),
+        ("(ﾉ≧∀≦)ﾉ ‥…━━━★", "wizard beam attack"),
+        ("¯\\_(ツ)_/¯", "shrug"),
+        ("♡₊˚", "hearts and sparkles"),
     ]
     .iter()
     .map(|row| Moji {
