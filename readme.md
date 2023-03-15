@@ -22,7 +22,16 @@ if you are using nix flakes, simply add this repository to yours like this:
     };
 }
 ```
-and then add `kaokao.packages.${pkgs.system}.default` to your list of installed packages
+and then add `pkgs.kaokao.packages.${pkgs.system}.default` to your list of unstalled packages
+```
+{pkgs, kaokao, ...} : {
+  environment.systemPackages = with pkgs; [
+    ...
+    kaokao.packages.${pkgs.system}.default
+    ...
+  ]
+}
+```
 
 ### other
 you can also manually compile this project
