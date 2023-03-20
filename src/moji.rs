@@ -53,7 +53,12 @@ pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
         mojis.append(&mut builtin_kaomoji())
     }
     mojis.append(&mut load_moji_from_files(&cfg)?);
-    Ok(mojis.into_iter().unique().collect::<Vec<Moji>>())
+
+    Ok(if cfg.show_duplicates {
+        mojis
+    } else {
+        mojis.into_iter().unique().collect::<Vec<Moji>>()
+    })
 }
 
 fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {

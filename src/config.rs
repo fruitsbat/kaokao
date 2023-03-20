@@ -22,6 +22,9 @@ pub struct Config {
 
     #[arg(short, long, default_value = "(*･ω･)✎ ")]
     pub prompt: String,
+
+    #[arg(long)]
+    pub show_duplicates: bool,
 }
 
 pub fn load_config() -> Config {
