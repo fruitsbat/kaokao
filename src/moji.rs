@@ -1,7 +1,7 @@
-use crate::config::Config;
+use crate::config::{self, Config};
 use csv;
 use directories;
-use emojis;
+use emojis::{self, Emoji};
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use serde_json;
@@ -15,11 +15,11 @@ pub struct Moji {
     pub description: String,
 }
 
-impl Moji {
-    pub fn from_emoji(emoji: &emojis::Emoji) -> Self {
+impl From<&Emoji> for Moji {
+    fn from(emoji: &Emoji) -> Self {
         Moji {
             value: emoji.as_str().into(),
-            description: description::get_description(emoji.name()),
+            description: description::get_description(emoji),
         }
     }
 }
@@ -43,11 +43,7 @@ pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
         mojis.append(&mut load_recent()?);
     }
     if !cfg.disable_unicode {
-        mojis.append(
-            &mut emojis::iter()
-                .map(|e| Moji::from_emoji(e))
-                .collect::<Vec<Moji>>(),
-        );
+        mojis.append(&mut get_unicode_emoji(cfg)?);
     }
     if !cfg.disable_kaomoji {
         mojis.append(&mut builtin_kaomoji())
@@ -59,6 +55,32 @@ pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
     } else {
         mojis.into_iter().unique().collect::<Vec<Moji>>()
     })
+}
+
+fn get_unicode_emoji(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
+    let mut mojis = vec![];
+    for m in emojis::iter() {
+        let m = match m.skin_tones() {
+            Some(skin_tones) => skin_tones,
+            None => {
+                mojis.push(m.into());
+                continue;
+            }
+        };
+        let mut m = m
+            .filter(|value| {
+                cfg.skin_tones.contains({
+                    let skin_tone = value.skin_tone();
+                    &config::SkinTone::from(&skin_tone.unwrap())
+                })
+            })
+            .map(|value| value.into())
+            .collect::<Vec<Moji>>();
+        mojis.append(&mut m)
+    }
+
+    mojis.append(&mut emojis::iter().map(|e| e.into()).collect::<Vec<Moji>>());
+    Ok(mojis)
 }
 
 fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
