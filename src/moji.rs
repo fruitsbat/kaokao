@@ -2,13 +2,14 @@ use crate::config::Config;
 use csv;
 use directories;
 use emojis;
+use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use serde_json;
 use std::{error::Error, fs};
 
 mod description;
 
-#[derive(Serialize, Deserialize, Clone, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Clone, Eq, PartialEq, Hash)]
 pub struct Moji {
     pub value: String,
     pub description: String,
@@ -52,7 +53,7 @@ pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
         mojis.append(&mut builtin_kaomoji())
     }
     mojis.append(&mut load_moji_from_files(&cfg)?);
-    Ok(mojis)
+    Ok(mojis.into_iter().unique().collect::<Vec<Moji>>())
 }
 
 fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
