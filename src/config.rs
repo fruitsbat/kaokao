@@ -26,7 +26,7 @@ pub struct Config {
     #[arg(long)]
     pub show_duplicates: bool,
 
-    #[arg(long, value_enum, num_args = 1.., value_delimiter = ' ', default_value = "default")]
+    #[arg(long, value_enum, num_args = 1.., value_delimiter = ' ', default_value = "default dark medium-dark medium medium-light light")]
     pub skin_tones: Vec<SkinTone>,
 }
 
