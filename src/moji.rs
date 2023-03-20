@@ -6,6 +6,8 @@ use serde::{Deserialize, Serialize};
 use serde_json;
 use std::{error::Error, fs};
 
+mod description;
+
 #[derive(Serialize, Deserialize, Clone, Eq, PartialEq)]
 pub struct Moji {
     pub value: String,
@@ -16,7 +18,7 @@ impl Moji {
     pub fn from_emoji(emoji: &emojis::Emoji) -> Self {
         Moji {
             value: emoji.as_str().into(),
-            description: emoji.name().into(),
+            description: description::get_description(emoji.name()),
         }
     }
 }
