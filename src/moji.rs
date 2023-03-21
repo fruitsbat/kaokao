@@ -43,7 +43,7 @@ pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
         mojis.append(&mut load_recent()?);
     }
     if !cfg.disable_unicode {
-        mojis.append(&mut get_unicode_emoji(cfg)?);
+        mojis.append(&mut get_unicode_emoji(cfg));
     }
     if !cfg.disable_kaomoji {
         mojis.append(&mut builtin_kaomoji())
@@ -57,7 +57,7 @@ pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
     })
 }
 
-fn get_unicode_emoji(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
+fn get_unicode_emoji(cfg: &Config) -> Vec<Moji> {
     let mut mojis = vec![];
     for m in emojis::iter() {
         let m = match m.skin_tones() {
@@ -71,10 +71,7 @@ fn get_unicode_emoji(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
             .filter(|value| {
                 cfg.skin_tones.contains({
                     let skin_tone = value.skin_tone();
-                    &config::SkinTone::from(
-                        &skin_tone
-                            .ok_or("tried getting skin tone from an emoji that doesnt have one")?,
-                    )
+                    &config::SkinTone::from(&skin_tone.unwrap())
                 })
             })
             .map(|value| value.into())
@@ -83,7 +80,7 @@ fn get_unicode_emoji(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
     }
 
     mojis.append(&mut emojis::iter().map(|e| e.into()).collect::<Vec<Moji>>());
-    Ok(mojis)
+    mojis
 }
 
 fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
