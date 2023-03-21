@@ -34,7 +34,7 @@ pub fn load_config() -> Config {
     Config::parse()
 }
 
-#[derive(Clone, Debug, ValueEnum, PartialEq)]
+#[derive(Clone, Debug, ValueEnum, PartialEq, Eq)]
 pub enum SkinTone {
     Default,
     Light,

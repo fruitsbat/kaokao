@@ -1,10 +1,9 @@
 use crate::config::{self, Config};
-use csv;
-use directories;
+
 use emojis::{self, Emoji};
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-use serde_json;
+
 use std::{error::Error, fs};
 
 mod description;
@@ -29,7 +28,7 @@ pub fn moji_to_string(moji: &Vec<Moji>) -> String {
     for m in moji {
         s.push_str(&format!(
             "{}{} {}",
-            if s.len() == 0 { "" } else { "\n" },
+            if s.is_empty() { "" } else { "\n" },
             m.value,
             m.description
         ));
@@ -43,12 +42,12 @@ pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
         mojis.append(&mut load_recent()?);
     }
     if !cfg.disable_unicode {
-        mojis.append(&mut get_unicode_emoji(cfg)?);
+        mojis.append(&mut get_unicode_emoji(cfg));
     }
     if !cfg.disable_kaomoji {
         mojis.append(&mut builtin_kaomoji())
     }
-    mojis.append(&mut load_moji_from_files(&cfg)?);
+    mojis.append(&mut load_moji_from_files(cfg)?);
 
     Ok(if cfg.show_duplicates {
         mojis
@@ -57,7 +56,7 @@ pub fn get_moji_list(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
     })
 }
 
-fn get_unicode_emoji(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
+fn get_unicode_emoji(cfg: &Config) -> Vec<Moji> {
     let mut mojis = vec![];
     for m in emojis::iter() {
         let m = match m.skin_tones() {
@@ -80,7 +79,7 @@ fn get_unicode_emoji(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
     }
 
     mojis.append(&mut emojis::iter().map(|e| e.into()).collect::<Vec<Moji>>());
-    Ok(mojis)
+    mojis
 }
 
 fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
@@ -110,18 +109,16 @@ pub fn save_recent(moji: Moji) -> Result<(), Box<dyn Error>> {
         &mut load_recent()?
             .iter()
             .filter(|&m| m.clone() != moji)
-            .map(|m| m.clone())
+            .cloned()
             .collect::<Vec<Moji>>(),
     );
     let mut new_recents = vec![];
-    let mut i = 0;
-    for r in recents {
+    for (i, r) in recents.into_iter().enumerate() {
         // limit to 100 most recent
         if i >= 100 {
             break;
         }
         new_recents.push(r);
-        i += 1;
     }
     let base_dirs = directories::BaseDirs::new().ok_or("failed to find base dir!")?;
     let data_dir = base_dirs.data_dir();
