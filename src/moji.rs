@@ -71,7 +71,10 @@ fn get_unicode_emoji(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
             .filter(|value| {
                 cfg.skin_tones.contains({
                     let skin_tone = value.skin_tone();
-                    &config::SkinTone::from(&skin_tone.unwrap())
+                    &config::SkinTone::from(
+                        &skin_tone
+                            .ok_or("tried getting skin tone from an emoji that doesnt have one")?,
+                    )
                 })
             })
             .map(|value| value.into())
