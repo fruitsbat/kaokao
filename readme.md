@@ -5,7 +5,9 @@ a simple emoji picker using rofi
 ## warning
 kaomoji are HORRIBLE for screeen readers.
 
-please restrain yourself from using them in more public places like blogs or social media posts and pay attention to if your friends are okay with them
+please restrain yourself from using them in more public places like blogs or social media posts
+
+also make sure your friends have no problem reading them when using it with them!
 
 paste responsibly!
 
@@ -52,7 +54,7 @@ you can also manually compile this project
 - go into into the folder you just clones
   - `cd kaokao`
 - compile it
-  - `cargo build release`
+  - `cargo build --release`
 
 your binary will appear in `kaokao/target/release`
 
