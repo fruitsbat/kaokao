@@ -62,4 +62,6 @@ pub const KAOMOJI: &'static [(&'static str, &'static str)] = &[
     ("(●｀・ω・)=Ｏ)｀-д゜)", "punch"),
     ("^_^", "smile"),
     ("T_T", "crying"),
+    ("( -_-)/\"(T_T )", "pat, crying"),
+    ("( ´･･)ﾉ(._.`)", "pat, headpat"),
 ];
