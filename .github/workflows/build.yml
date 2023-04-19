@@ -1,0 +1,3 @@
+- name: Build and upload Rust binary to GitHub Releases
+  uses: taiki-e/upload-rust-binary-action@v1.12.0
+
