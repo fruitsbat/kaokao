@@ -21,7 +21,7 @@ jobs:
 
       # BUILD
     - name: build x86
-      run: cargo build --release --target x86_32-unknown-linux-gnu
+      run: cargo build --release --target x86_64-unknown-linux-gnu
 
     - name: build armv8
       run: cargo build --release --target aarch64-unknown-linux-gnu
