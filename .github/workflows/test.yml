@@ -1,8 +1,9 @@
-name: Rust
+name: build
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+    - "**"
   pull_request:
     branches: [ "main" ]
 
@@ -11,12 +12,27 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --verbose
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo test --verbose --release
+
+      # BUILD
+    - name: build x86
+      run: cargo build --release --target x86_32-unknown-linux-gnu
+
+    - name: build armv8
+      run: cargo build --release --target aarch64-unknown-linux-gnu
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: kaokao.linux-x86_64
+        path: target/x86_64-unknown-linux-gnu/release/kaokao
+
+      # UPLOAD
+    - uses: actions/upload-artifact@v3
+      with:
+        name: kaokao.linux-x86_64
+        path: target/x86_64-unknown-linux-gnu/release/kaokao
