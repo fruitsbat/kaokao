@@ -1,4 +1,4 @@
-pub const KAOMOJI: &'static [(&'static str, &'static str)] = &[
+pub const KAOMOJI: &[(&str, &str)] = &[
     ("(ﾉ≧∇≦)ﾉ ﾐ ┸━┸", "tableflip"),
     ("(* >ω<)=3ACHOOE!", "sneezing"),
     ("┐(°‿°)┌", "shrugging"),
