@@ -25,12 +25,38 @@ pub fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
 
 #[cfg(test)]
 mod tests {
-    use crate::config::SkinTone;
+    use super::*;
+    use crate::config::Config;
     use std::{fs::File, io::prelude::*};
 
     #[test]
-    fn test_json_parsing() {
+    fn parsing() {
+        // make json file
         let mut json = File::create("test.json").unwrap();
-        let _ = json.write_all(b"[{'value': 'hehe', 'description': 'hoho'}]");
+        let _ = json.write_all(include_bytes!("test.json"));
+
+        // make csv file
+        let mut csv = File::create("test.csv").unwrap();
+        let _ = csv.write_all(include_bytes!("test.csv"));
+
+        let moji = load_moji_from_files(&Config {
+            disable_unicode: true,
+            disable_kaomoji: true,
+            disable_recent: true,
+            files: vec!["test.json".into(), "test.csv".into()],
+            ..Default::default()
+        })
+        .unwrap();
+
+        assert!(moji.contains(&Moji {
+            description: "hoho".into(),
+            value: "hehe".into(),
+            skintones: None,
+        }));
+        assert!(moji.contains(&Moji {
+            description: "meowy".into(),
+            value: "meow".into(),
+            skintones: None,
+        }));
     }
 }
