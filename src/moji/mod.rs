@@ -20,13 +20,15 @@ pub struct Moji {
 
 impl From<&Emoji> for Moji {
     fn from(emoji: &Emoji) -> Self {
-        let skintones: Option<Vec<SkinTone>> = emoji.skin_tones().map(|skintones| skintones
-                        // convert skin tone into native type
-                        .filter_map(|s| {
-                            // hehe
-                            s.skin_tone().map(|tone| SkinTone::from(&tone))
-                        })
-                        .collect::<Vec<SkinTone>>());
+        let skintones: Option<Vec<SkinTone>> = emoji.skin_tones().map(|skintones| {
+            skintones
+                // convert skin tone into native type
+                .filter_map(|s| {
+                    // hehe
+                    s.skin_tone().map(|tone| SkinTone::from(&tone))
+                })
+                .collect::<Vec<SkinTone>>()
+        });
         Moji {
             value: emoji.as_str().into(),
             description: description::get_description(emoji),
@@ -136,7 +138,8 @@ mod tests {
                     SkinTone::MediumDark,
                     SkinTone::Dark,
                 ]),
-            }
+            },
+            "italian hand not parsed correctly"
         );
     }
 }
