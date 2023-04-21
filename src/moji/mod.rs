@@ -137,4 +137,26 @@ mod tests {
         assert_eq!(moji.description, String::from("rightwards hand"));
         assert!(!moji.variations.is_empty());
     }
+
+    #[test]
+    fn list() {
+        let m1 = Moji {
+            value: "wow".into(),
+            description: "meow".into(),
+            variations: vec![],
+        };
+        let m2 = Moji {
+            value: "uwu".into(),
+            description: "owo".into(),
+            variations: vec![],
+        };
+
+        let list = vec![m1.clone(), m2];
+        let s = moji_to_string(&list);
+        assert_eq!(s, "wow meow\nuwu owo");
+
+        let list = vec![m1];
+        let s = moji_to_string(&list);
+        assert_eq!(s, "wow meow");
+    }
 }
