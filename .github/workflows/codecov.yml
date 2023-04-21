@@ -16,8 +16,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: run tests
-      run: cargo test
     - name: rust-tarpaulin
       uses: actions-rs/tarpaulin@v0.1
       with:
