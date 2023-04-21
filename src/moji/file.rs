@@ -25,7 +25,12 @@ pub fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
 
 #[cfg(test)]
 mod tests {
-    
+    use crate::config::SkinTone;
+    use std::{fs::File, io::prelude::*};
+
     #[test]
-    fn test_parsing() {}
+    fn test_json_parsing() {
+        let mut json = File::create("test.json").unwrap();
+        let _ = json.write_all(b"[{'value': 'hehe', 'description': 'hoho'}]");
+    }
 }
