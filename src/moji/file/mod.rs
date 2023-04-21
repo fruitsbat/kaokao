@@ -51,12 +51,12 @@ mod tests {
         assert!(moji.contains(&Moji {
             description: "hoho".into(),
             value: "hehe".into(),
-            skintones: None,
+            variations: vec![],
         }));
         assert!(moji.contains(&Moji {
             description: "meowy".into(),
             value: "meow".into(),
-            skintones: None,
+            variations: vec![],
         }));
     }
 }

@@ -47,7 +47,7 @@ mod test {
         save(Moji {
             description: "hehe".into(),
             value: ":-)".into(),
-            skintones: None,
+            variations: vec![],
         })
         .unwrap();
 
@@ -60,7 +60,7 @@ mod test {
         save(Moji {
             description: "cat".into(),
             value: "🐈".into(),
-            skintones: None,
+            variations: vec![],
         })
         .unwrap();
 

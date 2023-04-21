@@ -1,4 +1,4 @@
-use crate::config::{Config, SkinTone};
+use crate::config::Config;
 
 use emojis::{self, Emoji};
 use itertools::Itertools;
@@ -15,24 +15,31 @@ pub mod recent;
 pub struct Moji {
     pub value: String,
     pub description: String,
-    pub skintones: Option<Vec<SkinTone>>,
+    #[serde(default = "variations_default")]
+    pub variations: Vec<Moji>,
+}
+
+fn variations_default() -> Vec<Moji> {
+    vec![]
 }
 
 impl From<&Emoji> for Moji {
     fn from(emoji: &Emoji) -> Self {
-        let skintones: Option<Vec<SkinTone>> = emoji.skin_tones().map(|skintones| {
-            skintones
-                // convert skin tone into native type
-                .filter_map(|s| {
-                    // hehe
-                    s.skin_tone().map(|tone| SkinTone::from(&tone))
-                })
-                .collect::<Vec<SkinTone>>()
-        });
         Moji {
             value: emoji.as_str().into(),
             description: description::get_description(emoji),
-            skintones,
+            variations: {
+                match emoji.skin_tones() {
+                    None => vec![],
+                    Some(m) => m
+                        .map(|m| Moji {
+                            value: m.as_str().into(),
+                            description: description::get_description(m),
+                            variations: vec![],
+                        })
+                        .collect_vec(),
+                }
+            },
         }
     }
 }
@@ -80,7 +87,7 @@ fn builtin_kaomoji() -> Vec<Moji> {
         .map(|row| Moji {
             value: row.0.into(),
             description: row.1.into(),
-            skintones: None,
+            variations: vec![],
         })
         .collect::<Vec<Moji>>()
 }
@@ -125,21 +132,9 @@ mod tests {
 
     #[test]
     fn convert() {
-        assert_eq!(
-            Moji::from(emojis::get("🤌").unwrap()),
-            Moji {
-                value: "🤌".into(),
-                description: "pinched fingers, italian hand, chef's kiss".into(),
-                skintones: Some(vec![
-                    SkinTone::Default,
-                    SkinTone::Light,
-                    SkinTone::MediumLight,
-                    SkinTone::Medium,
-                    SkinTone::MediumDark,
-                    SkinTone::Dark,
-                ]),
-            },
-            "italian hand not parsed correctly"
-        );
+        let moji = Moji::from(emojis::get("🫱").unwrap());
+        assert_eq!(moji.value, String::from("🫱"));
+        assert_eq!(moji.description, String::from("rightwards hand"));
+        assert!(moji.variations.len() > 0);
     }
 }
