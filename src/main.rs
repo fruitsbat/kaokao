@@ -8,7 +8,7 @@ fn main() {
         Err(reason) => panic!("could not get emoji list because {}", reason),
         Ok(m) => m,
     };
-    let index = match rofi::get_index(&cfg, &moji::moji_to_string(&mojilist)) {
+    let mut index = match rofi::get_index(&cfg, &moji::moji_to_string(&mojilist)) {
         Err(reason) => panic!("rofi failed because: {}", reason),
         Ok(index) => index,
     };
@@ -16,13 +16,13 @@ fn main() {
     // the moji might have a variation!
     if !mojilist[index].variations.is_empty() {
         mojilist = mojilist[index].variations.clone();
-    }
 
-    // open rofi again to pick variation
-    let index = match rofi::get_index(&cfg, &moji::moji_to_string(&mojilist)) {
-        Err(reason) => panic!("rofi failed because: {}", reason),
-        Ok(index) => index,
-    };
+        // open rofi again to pick variation
+        index = match rofi::get_index(&cfg, &moji::moji_to_string(&mojilist)) {
+            Err(reason) => panic!("rofi failed because: {}", reason),
+            Ok(index) => index,
+        };
+    }
 
     match moji::recent::save(mojilist[index].clone()) {
         Ok(_) => (),
