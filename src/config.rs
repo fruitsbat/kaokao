@@ -1,6 +1,7 @@
 use clap::{self, Parser, ValueEnum};
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Parser, Debug)]
+#[derive(Clone, Parser, Debug, Default)]
 pub struct Config {
     #[arg(long, default_value = "rofi")]
     pub rofi_binary: String,
@@ -25,16 +26,13 @@ pub struct Config {
 
     #[arg(long)]
     pub show_duplicates: bool,
-
-    #[arg(long, value_enum, num_args = 1.., value_delimiter = ' ', default_value = "default dark medium-dark medium medium-light light light-and-medium light-and-medium-light light-and-medium light-and-medium-dark light-and-dark medium-light-and-light medium-light-and-medium medium-light-and-medium-dark medium-light-and-dark medium-and-light medium-and-medium-light medium-and-medium-dark medium-and-dark medium-dark-and-light medium-dark-and-medium-light medium-dark-and-medium medium-dark-and-dark dark-and-light dark-and-medium-light dark-and-medium dark-and-medium-dark")]
-    pub skin_tones: Vec<SkinTone>,
 }
 
 pub fn load_config() -> Config {
     Config::parse()
 }
 
-#[derive(Clone, Debug, ValueEnum, PartialEq, Eq)]
+#[derive(Clone, Debug, ValueEnum, PartialEq, Eq, Serialize, Deserialize, Hash)]
 pub enum SkinTone {
     Default,
     Light,
@@ -42,7 +40,7 @@ pub enum SkinTone {
     Medium,
     MediumDark,
     Dark,
-     LightAndMediumLight,
+    LightAndMediumLight,
     LightAndMedium,
     LightAndMediumDark,
     LightAndDark,
