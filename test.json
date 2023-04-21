@@ -5,6 +5,16 @@
   },
   {
     "value": "beep",
-    "description": "boop"
+    "description": "boop",
+    "variations": [
+      {
+        "value": "beep",
+        "description": "boop"
+      },
+      {
+        "value": "bleep",
+        "description": "bloop"
+      }
+    ]
   }
 ]
