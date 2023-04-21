@@ -1,5 +1,5 @@
-use clap::{self, Parser, ValueEnum};
-use serde::{Deserialize, Serialize};
+use clap::{self, Parser};
+
 
 #[derive(Clone, Parser, Debug, Default)]
 pub struct Config {

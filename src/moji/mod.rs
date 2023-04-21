@@ -135,6 +135,6 @@ mod tests {
         let moji = Moji::from(emojis::get("🫱").unwrap());
         assert_eq!(moji.value, String::from("🫱"));
         assert_eq!(moji.description, String::from("rightwards hand"));
-        assert!(moji.variations.len() > 0);
+        assert!(!moji.variations.is_empty());
     }
 }
