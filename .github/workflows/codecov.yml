@@ -11,12 +11,21 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  upload to codecov:
+  upload_to_codecov:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Run tests
-      run: cargo test
-    - name: upload_codecov
+    - name: rust-tarpaulin
+      uses: actions-rs/tarpaulin@v0.1
+      with:
+        version: '0.22.0'
+    - name: upload to codecov
       uses: codecov/codecov-action@v3
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+    - name: archive coverage results
+      uses: actions/upload-artifact@v1
+      with:
+        name: code-coverage-report
+        path: cobertura.xml
