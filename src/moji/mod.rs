@@ -20,26 +20,13 @@ pub struct Moji {
 
 impl From<&Emoji> for Moji {
     fn from(emoji: &Emoji) -> Self {
-        let skintones: Option<Vec<SkinTone>> = match emoji.skin_tones() {
-            None => None,
-            Some(skintones) => {
-                // hehe
-                Some(
-                    skintones
+        let skintones: Option<Vec<SkinTone>> = emoji.skin_tones().map(|skintones| skintones
                         // convert skin tone into native type
-                        .map(|s| {
+                        .filter_map(|s| {
                             // hehe
-                            match s.skin_tone() {
-                                None => None,
-                                Some(tone) => Some(SkinTone::from(&tone)),
-                            }
+                            s.skin_tone().map(|tone| SkinTone::from(&tone))
                         })
-                        .filter(|tone| tone.is_some())
-                        .map(|tone| tone.unwrap())
-                        .collect::<Vec<SkinTone>>(),
-                )
-            }
-        };
+                        .collect::<Vec<SkinTone>>());
         Moji {
             value: emoji.as_str().into(),
             description: description::get_description(emoji),
@@ -102,9 +89,9 @@ mod tests {
     #[test]
     fn builtin() {
         let unicode = get_unicode_emoji();
-        assert!(unicode.len() > 0, "no unicode emoji found");
+        assert!(!unicode.is_empty(), "no unicode emoji found");
         let kaomoji = builtin_kaomoji();
-        assert!(kaomoji.len() > 0, "no builtin kaomoji found");
+        assert!(!kaomoji.is_empty(), "no builtin kaomoji found");
     }
 
     #[test]
@@ -117,7 +104,7 @@ mod tests {
             ..Default::default()
         };
         let list = get_moji_list(&config).unwrap();
-        assert!(list.len() > 0);
+        assert!(!list.is_empty());
     }
 
     #[test]
@@ -131,7 +118,7 @@ mod tests {
         };
 
         let list = get_moji_list(&config).unwrap();
-        assert!(list.len() == 0, "this list should be empty!");
+        assert!(list.is_empty(), "this list should be empty!");
     }
 
     #[test]

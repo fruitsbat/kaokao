@@ -25,7 +25,7 @@ pub fn load_moji_from_files(cfg: &Config) -> Result<Vec<Moji>, Box<dyn Error>> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    
     #[test]
     fn test_parsing() {}
 }

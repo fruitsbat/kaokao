@@ -44,7 +44,7 @@ mod test {
 
     #[test]
     fn save_and_load() {
-        let _save = save(Moji {
+        save(Moji {
             description: "hehe".into(),
             value: ":-)".into(),
             skintones: None,
@@ -52,11 +52,12 @@ mod test {
         .unwrap();
 
         let recent = load().unwrap();
-        assert!(recent.len() > 0);
+        assert!(!recent.is_empty());
     }
 
+    #[test]
     fn without() {
-        let _save = save(Moji {
+        save(Moji {
             description: "cat".into(),
             value: "🐈".into(),
             skintones: None,
