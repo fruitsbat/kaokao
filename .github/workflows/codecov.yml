@@ -20,8 +20,13 @@ jobs:
       run: cargo test
     - name: run tarpaulin
       uses: actions-rs/tarpaulin@v0.1
+      with:
+        version: '0.15'
+        args: '-- --test-threads 1'
     - name: upload to codecov
       uses: codecov/codecov-action@v3
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
     - name: archive coverage results
       uses: actions/upload-artifact@v1
       with:
