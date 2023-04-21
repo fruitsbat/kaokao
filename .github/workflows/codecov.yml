@@ -19,9 +19,9 @@ jobs:
     - name: run tests
       run: cargo test
     - name: rust-tarpaulin
-      uses: actions-rs/tarpaulin@v0.1.0
+      uses: actions-rs/tarpaulin@v0.1
       with:
-        version: 'latest'
+        version: '0.22.0'
     - name: upload to codecov
       uses: codecov/codecov-action@v3
       with:
