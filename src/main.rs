@@ -14,7 +14,7 @@ fn main() {
     };
 
     // the moji might have a variation!
-    if mojilist[index].variations.len() > 0 {
+    if !mojilist[index].variations.is_empty() {
         mojilist = mojilist[index].variations.clone();
     }
 
