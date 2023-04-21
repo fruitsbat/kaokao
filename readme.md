@@ -97,8 +97,24 @@ use your own files `--files something.json something_else.csv`
 `something.json` would look like this
 ```
 [
-{"value" : " ʅ(ツ)ʃ", "description" : "shrug"},
-{"value" : "（＾－＾）", "description" : "smiling"}
+  {
+    "value": "hehe",
+    "description": "hoho"
+  },
+  {
+    "value": "beep",
+    "description": "boop",
+    "variations": [
+      {
+        "value": "beep",
+        "description": "boop"
+      },
+      {
+        "value": "bleep",
+        "description": "bloop"
+      }
+    ]
+  }
 ]
 ```
 
