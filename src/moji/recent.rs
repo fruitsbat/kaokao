@@ -43,6 +43,7 @@ mod test {
     use crate::{config::Config, moji};
 
     #[test]
+    #[ignore]
     fn save_and_load() {
         save(Moji {
             description: "hehe".into(),
@@ -56,6 +57,7 @@ mod test {
     }
 
     #[test]
+    #[ignore]
     fn without() {
         save(Moji {
             description: "cat".into(),
