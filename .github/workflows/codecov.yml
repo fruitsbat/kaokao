@@ -18,5 +18,5 @@ jobs:
     - uses: actions/checkout@v3
     - name: Run tests
       run: cargo test
-    - name: Upload coverage reports to Codecov
+    - name: upload_codecov
       uses: codecov/codecov-action@v3
