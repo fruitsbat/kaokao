@@ -136,10 +136,20 @@ mod tests {
 
     #[test]
     fn convert() {
-        assert_eq!(Moji::from(emojis::get("🤌").unwrap()), Moji {
-            value: "🤌".into(),
-            description: "pinched fingers",
-            skintones: vec![],
-        });
+        assert_eq!(
+            Moji::from(emojis::get("🤌").unwrap()),
+            Moji {
+                value: "🤌".into(),
+                description: "pinched fingers, italian hand, chef's kiss".into(),
+                skintones: Some(vec![
+                    SkinTone::Default,
+                    SkinTone::Light,
+                    SkinTone::MediumLight,
+                    SkinTone::Medium,
+                    SkinTone::MediumDark,
+                    SkinTone::Dark,
+                ]),
+            }
+        );
     }
 }
