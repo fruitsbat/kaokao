@@ -2,7 +2,7 @@
 a simple emoji picker using rofi
 ![a simple usage example, a kaomoji is being copy pasted into a terminal](https://github.com/zoe-bat/kaokao/blob/main/kaokao.gif?raw=true)
 
-[![codecov](https://codecov.io/github/zoe-bat/kaokao/branch/main/graph/badge.svg?token=KLTJ6OKLTU)](https://codecov.io/github/zoe-bat/kaokao)
+[![codecov](https://codecov.io/github/fruitsbat/kaokao/graph/badge.svg?token=KLTJ6OKLTU)](https://codecov.io/github/fruitsbat/kaokao)
 
 ## warning
 kaomoji are HORRIBLE for screeen readers.
